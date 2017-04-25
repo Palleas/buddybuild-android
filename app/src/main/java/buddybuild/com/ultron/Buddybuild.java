@@ -16,7 +16,7 @@ public interface Buddybuild {
     Call<Build> latestBuild(@Header("Authorization") String authorization, @Path("app_id") String appId, @Query("branch") String branch);
 
     @FormUrlEncoded
-    @POST("apps/{{app_id}}/build")
+    @POST("apps/{app_id}/build")
     Call<Build> trigger(@Header("Authorization") String authorization, @Path("app_id") String appId, @Field("branch") String branch);
 
 }

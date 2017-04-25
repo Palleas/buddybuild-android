@@ -54,7 +54,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void trigger(View button) {
-        Call<Build> buildCall = service.trigger("Bearer " + R.string.buddybuild_token, "58ff5bab95effc0001705c93", "master");
+        Call<Build> buildCall = service.trigger("Bearer " + getString(R.string.buddybuild_token), "58ff5bab95effc0001705c93", "master");
+        buildCall.enqueue(new Callback<Build>() {
+            @Override
+            public void onResponse(Call<Build> call, Response<Build> response) {
+                System.out.println(call.request().url().toString());
+                System.out.println(response.raw().toString());
 
+                TextView number = (TextView) findViewById(R.id.build_number);
+                number.setText(response.body().getId());
+            }
+
+            @Override
+            public void onFailure(Call<Build> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }
