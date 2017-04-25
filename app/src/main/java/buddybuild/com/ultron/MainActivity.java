@@ -2,11 +2,17 @@ package buddybuild.com.ultron;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.squareup.moshi.Moshi;
+import java.io.IOException;
+import java.util.List;
 
+import buddybuild.com.ultron.model.App;
+import buddybuild.com.ultron.model.Buddybuild;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,9 +24,24 @@ public class MainActivity extends AppCompatActivity {
     private final Buddybuild service;
 
     public MainActivity() {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+
+                Request request = original.newBuilder()
+                        .header("Authorization", "Bearer " + getString(R.string.buddybuild_token))
+                        .method(original.method(), original.body())
+                        .build();
+
+                return chain.proceed(request);            }
+        });
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.buddybuild.com/v1/")
                 .addConverterFactory(MoshiConverterFactory.create())
+                .client(httpClient.build())
                 .build();
 
         service = retrofit.create(Buddybuild.class);
@@ -32,42 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Call<Build> buildCall = service.latestBuild("Bearer " + getString(R.string.buddybuild_token), "58ff5bab95effc0001705c93", "master");
-
-        buildCall.enqueue(new Callback<Build>() {
+        service.apps().enqueue(new Callback<List<App>>() {
             @Override
-            public void onResponse(Call<Build> call, Response<Build> response) {
-                System.out.println(call.request().url().toString());
-
-                TextView number = (TextView) findViewById(R.id.build_number);
-                number.setText(response.body().getId());
-
-                TextView status = (TextView) findViewById(R.id.build_status);
-                status.setText(response.body().getBuildStatus());
+            public void onResponse(Call<List<App>> call, Response<List<App>> response) {
+                AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(response.body());
+                RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
+                list.setAdapter(adapter);
+                list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
 
             @Override
-            public void onFailure(Call<Build> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+            public void onFailure(Call<List<App>> call, Throwable t) {
 
-    public void trigger(View button) {
-        Call<Build> buildCall = service.trigger("Bearer " + getString(R.string.buddybuild_token), "58ff5bab95effc0001705c93", "master");
-        buildCall.enqueue(new Callback<Build>() {
-            @Override
-            public void onResponse(Call<Build> call, Response<Build> response) {
-                System.out.println(call.request().url().toString());
-                System.out.println(response.raw().toString());
-
-                TextView number = (TextView) findViewById(R.id.build_number);
-                number.setText(response.body().getId());
-            }
-
-            @Override
-            public void onFailure(Call<Build> call, Throwable t) {
-                t.printStackTrace();
             }
         });
     }
