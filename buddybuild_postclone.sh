@@ -7,3 +7,5 @@ if [[ -f "$CONFIGURATION" ]]; then
 else
     cp "${TARGET_CONFIGURATION}.dist" "${TARGET_CONFIGURATION}"
 fi
+
+cat "${TARGET_CONFIGURATION}"
