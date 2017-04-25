@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.squareup.moshi.Moshi;
 
-import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,11 +18,9 @@ public class MainActivity extends AppCompatActivity {
     private final Buddybuild service;
 
     public MainActivity() {
-        Moshi moshi = new Moshi.Builder().build();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.buddybuild.com/v1/")
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
         service = retrofit.create(Buddybuild.class);
@@ -36,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // TODO Store token securly
         Call<Build> buildCall = service.latestBuild("Bearer " + getString(R.string.buddybuild_token), "58ff5bab95effc0001705c93", "master");
 
         buildCall.enqueue(new Callback<Build>() {
