@@ -5,13 +5,10 @@ import android.content.res.Resources;
 
 import java.io.IOException;
 
-import javax.inject.Singleton;
-
 import buddybuild.com.ultron.model.Buddybuild;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
-import dagger.Subcomponent;
 import dagger.android.ActivityKey;
 import dagger.android.AndroidInjector;
 import dagger.multibindings.IntoMap;
@@ -31,8 +28,6 @@ public abstract class ActivityModule {
 
     @Provides
     static Buddybuild provideBuddybuild() {
-        Resources.getSystem().getString(R.string.buddybuild_token);
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
             @Override
@@ -40,7 +35,7 @@ public abstract class ActivityModule {
                 Request original = chain.request();
 
                 Request request = original.newBuilder()
-                        .header("Authorization", "Bearer " + "token")
+                        .header("Authorization", "Bearer " + BuildConfig.BUDDYBUILD_API_KEY)
                         .method(original.method(), original.body())
                         .build();
 
