@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BUDDYBUILD_API_KEY", '"' + System.getenv("BUDDYBUILD_API_KEY") ?: BUDDYBUILD_API_KEY + '"')
+        buildConfigField("String", "BUDDYBUILD_API_KEY", '"' + (System.getenv("BUDDYBUILD_API_KEY") ?: BUDDYBUILD_API_KEY) + '"')
     }
     buildTypes {
         release {
