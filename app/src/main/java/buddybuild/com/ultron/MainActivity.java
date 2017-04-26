@@ -1,29 +1,26 @@
 package buddybuild.com.ultron;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import buddybuild.com.ultron.controller.AppsController;
 import buddybuild.com.ultron.model.App;
-import buddybuild.com.ultron.model.Buddybuild;
 import dagger.android.AndroidInjection;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AppsRecyclerViewAdapter.OnAppClickListener {
+
+    public static final String APP_ID = "com.buddybuild.Ultron.APP_ID";
+    public static final String APP_NAME = "com.buddybuild.Ultron.APP_NAME";
 
     @Inject
     AppsController appsController;
@@ -36,10 +33,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
+
+        final MainActivity self = this;
         appsController.list().enqueue(new Callback<List<App>>() {
             @Override
             public void onResponse(Call<List<App>> call, Response<List<App>> response) {
-                AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(response.body());
+                AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(response.body(), self);
                 RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
                 list.setAdapter(adapter);
                 list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -50,5 +50,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onAppClick(App app) {
+        System.out.println("Did select app id = " + app.getId());
+
+        Intent intent = new Intent(this, BuildsActivity.class);
+        intent.putExtra(APP_ID, app.getId());
+        intent.putExtra(APP_NAME, app.getName());
+        startActivity(intent);
     }
 }

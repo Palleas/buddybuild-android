@@ -15,8 +15,8 @@ public interface Buddybuild {
     @GET("apps")
     Call<List<App>> apps();
 
-    @GET("apps/{app_id}/build/latest")
-    Call<Build> latestBuild(@Path("app_id") String appId, @Query("branch") String branch);
+    @GET("apps/{app_id}/builds")
+    Call<List<Build>> builds(@Path("app_id") String appId, @Query("limit") int limit);
 
     @FormUrlEncoded
     @POST("apps/{app_id}/build")

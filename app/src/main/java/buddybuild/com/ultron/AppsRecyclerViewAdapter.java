@@ -12,10 +12,16 @@ import java.util.List;
 
 public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<App> mValues;
+    public interface OnAppClickListener {
+        void onAppClick(App app);
+    }
 
-    public AppsRecyclerViewAdapter(List<App> items) {
-        mValues = items;
+    private final List<App> mValues;
+    private final OnAppClickListener listener;
+
+    public AppsRecyclerViewAdapter(List<App> items, OnAppClickListener listener) {
+        this.mValues = items;
+        this.listener = listener;
     }
 
     @Override
@@ -27,8 +33,7 @@ public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.platformView.setText(mValues.get(position).getPlatform());
-        holder.nameView.setText(mValues.get(position).getName());
+        holder.bind(mValues.get(position), listener);
     }
 
     @Override
@@ -45,6 +50,18 @@ public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerVi
 
             platformView = (TextView) view.findViewById(R.id.platform);
             nameView = (TextView) view.findViewById(R.id.name);
+        }
+
+        public void bind(final App app, final OnAppClickListener listener) {
+            platformView.setText(app.getPlatform());
+            nameView.setText(app.getName());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onAppClick(app);
+                }
+            });
         }
 
         @Override

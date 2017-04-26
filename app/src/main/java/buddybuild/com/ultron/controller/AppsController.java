@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import buddybuild.com.ultron.model.App;
+import buddybuild.com.ultron.model.Build;
 import buddybuild.com.ultron.model.Buddybuild;
 import retrofit2.Call;
 
@@ -19,6 +20,10 @@ public class AppsController {
 
     public Call<List<App>> list() {
         return buddybuild.apps();
+    }
+
+    public Call<List<Build>> builds(String appId) {
+        return buddybuild.builds(appId, 100);
     }
 
 }
