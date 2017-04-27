@@ -13,6 +13,10 @@ import javax.inject.Inject;
 import buddybuild.com.ultron.controller.AppsController;
 import buddybuild.com.ultron.model.App;
 import dagger.android.AndroidInjection;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,18 +40,16 @@ public class MainActivity extends BaseActivity implements AppsRecyclerViewAdapte
         RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
 
         final MainActivity self = this;
-        appsController.list().enqueue(new Callback<List<App>>() {
+        appsController.list()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<App>>() {
             @Override
-            public void onResponse(Call<List<App>> call, Response<List<App>> response) {
-                AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(response.body(), self);
+            public void accept(@NonNull List<App> apps) throws Exception {
+                AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(apps, self);
                 RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
                 list.setAdapter(adapter);
                 list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            }
-
-            @Override
-            public void onFailure(Call<List<App>> call, Throwable t) {
-
             }
         });
     }

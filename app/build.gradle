@@ -12,7 +12,17 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BUDDYBUILD_API_KEY", '"' + (System.getenv("BUDDYBUILD_API_KEY") ?: BUDDYBUILD_API_KEY) + '"')
+
+        jackOptions {
+            enabled true
+        }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,4 +47,11 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.10'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
     compile 'com.android.support:design:25.3.0'
+
+    compile "io.reactivex.rxjava2:rxjava:2.0.9"
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

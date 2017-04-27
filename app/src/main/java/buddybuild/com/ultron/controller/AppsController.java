@@ -3,14 +3,11 @@ package buddybuild.com.ultron.controller;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import buddybuild.com.ultron.ActivityModule;
 import buddybuild.com.ultron.model.App;
 import buddybuild.com.ultron.model.Build;
 import buddybuild.com.ultron.model.Buddybuild;
-import dagger.Component;
-import retrofit2.Call;
+import io.reactivex.Observable;
 
 public class AppsController {
 
@@ -21,15 +18,15 @@ public class AppsController {
         this.buddybuild = buddybuild;
     }
 
-    public Call<List<App>> list() {
+    public Observable<List<App>> list() {
         return buddybuild.apps();
     }
 
-    public Call<List<Build>> builds(String appId) {
+    public Observable<List<Build>> builds(String appId) {
         return buddybuild.builds(appId, 100);
     }
 
-    public Call<Build> trigger(String appId) {
+    public Observable<Build> trigger(String appId) {
         return buddybuild.trigger(appId, null);
     }
 }
