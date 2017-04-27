@@ -5,5 +5,10 @@ import dagger.android.AndroidInjectionModule;
 
 @Component(modules = {ActivityModule.class, AndroidInjectionModule.class})
 public interface IApplicationComponent {
+
     void inject(MyApplication application);
+
+    void inject(MainActivity mainActivity);
+
+    void inject(BuildsActivity buildsActivity);
 }

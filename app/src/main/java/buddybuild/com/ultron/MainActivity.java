@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements AppsRecyclerViewAdapter.OnAppClickListener {
+public class MainActivity extends BaseActivity implements AppsRecyclerViewAdapter.OnAppClickListener {
 
     public static final String APP_ID = "com.buddybuild.Ultron.APP_ID";
     public static final String APP_NAME = "com.buddybuild.Ultron.APP_NAME";
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements AppsRecyclerViewA
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+        MyApplication.getApplicationComponent().inject(this);
 
         super.onCreate(savedInstanceState);
 

@@ -18,18 +18,8 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-@Module(subcomponents = {IMainActivitySubcomponent.class, IBuildsActivitySubcomponent.class})
+@Module
 public abstract class ActivityModule {
-
-    @Binds
-    @IntoMap
-    @ActivityKey(MainActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity> bindYourActivityInjectorFactory(IMainActivitySubcomponent.Builder builder);
-
-    @Binds
-    @IntoMap
-    @ActivityKey(BuildsActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity> bindYourActivityInjectorFactory2(IBuildsActivitySubcomponent.Builder builder);
 
     @Provides
     static Buddybuild provideBuddybuild() {

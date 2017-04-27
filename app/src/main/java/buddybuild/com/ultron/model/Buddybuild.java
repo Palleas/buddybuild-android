@@ -2,6 +2,10 @@ package buddybuild.com.ultron.model;
 
 import java.util.List;
 
+import javax.inject.Singleton;
+
+import buddybuild.com.ultron.ActivityModule;
+import dagger.Component;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

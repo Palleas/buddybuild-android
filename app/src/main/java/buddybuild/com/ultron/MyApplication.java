@@ -12,10 +12,17 @@ public class MyApplication extends Application implements HasDispatchingActivity
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
+    private static IApplicationComponent applicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        DaggerIApplicationComponent.create().inject(this);
+
+        applicationComponent = DaggerIApplicationComponent.builder().build();
+    }
+
+    public static IApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 
     @Override
