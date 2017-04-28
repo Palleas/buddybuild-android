@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import buddybuild.com.ultron.model.App;
+import butterknife.BindView;
 
 import java.util.List;
 
@@ -42,14 +43,11 @@ public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView platformView;
-        public final TextView nameView;
+         @BindView(R.id.platform) TextView platformView;
+        @BindView(R.id.name)TextView nameView;
 
         public ViewHolder(View view) {
             super(view);
-
-            platformView = (TextView) view.findViewById(R.id.platform);
-            nameView = (TextView) view.findViewById(R.id.name);
         }
 
         public void bind(final App app, final OnAppClickListener listener) {

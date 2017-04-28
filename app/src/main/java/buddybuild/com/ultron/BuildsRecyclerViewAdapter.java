@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import buddybuild.com.ultron.model.Build;
+import butterknife.BindView;
 
 public class BuildsRecyclerViewAdapter extends RecyclerView.Adapter<BuildsRecyclerViewAdapter.BuildHolder> {
 
@@ -38,14 +39,11 @@ public class BuildsRecyclerViewAdapter extends RecyclerView.Adapter<BuildsRecycl
     }
 
     public class BuildHolder extends RecyclerView.ViewHolder {
-        public final TextView commitMessageView;
-        public final TextView authorView;
+        @BindView(R.id.commit_message) TextView commitMessageView;
+        @BindView(R.id.author) TextView authorView;
 
         public BuildHolder(View itemView) {
             super(itemView);
-
-            commitMessageView = (TextView) itemView.findViewById(R.id.commit_message);
-            authorView = (TextView) itemView.findViewById(R.id.author);
         }
 
         public void bind(Build build) {

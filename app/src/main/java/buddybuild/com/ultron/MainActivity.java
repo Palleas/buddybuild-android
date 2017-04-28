@@ -12,6 +12,8 @@ import javax.inject.Inject;
 
 import buddybuild.com.ultron.controller.AppsController;
 import buddybuild.com.ultron.model.App;
+import butterknife.BindView;
+import dagger.Binds;
 import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -29,6 +31,8 @@ public class MainActivity extends BaseActivity implements AppsRecyclerViewAdapte
     @Inject
     AppsController appsController;
 
+    @BindView(R.id.apps_list) RecyclerView list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MyApplication.getApplicationComponent().inject(this);
@@ -43,21 +47,15 @@ public class MainActivity extends BaseActivity implements AppsRecyclerViewAdapte
         appsController.list()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<App>>() {
-            @Override
-            public void accept(@NonNull List<App> apps) throws Exception {
-                AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(apps, self);
-                RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
-                list.setAdapter(adapter);
-                list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            }
-        });
+                .subscribe(apps -> {
+                    AppsRecyclerViewAdapter adapter = new AppsRecyclerViewAdapter(apps, self);
+                    list.setAdapter(adapter);
+                    list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                });
     }
 
     @Override
     public void onAppClick(App app) {
-        System.out.println("Did select app id = " + app.getId());
-
         Intent intent = new Intent(this, BuildsActivity.class);
         intent.putExtra(APP_ID, app.getId());
         intent.putExtra(APP_NAME, app.getName());

@@ -6,26 +6,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.reactivestreams.Subscriber;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
 import buddybuild.com.ultron.controller.AppsController;
-import buddybuild.com.ultron.model.Build;
-import dagger.android.AndroidInjection;
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BuildsActivity extends AppCompatActivity {
 
     private String appId;
+
+    @BindView(R.id.builds_list) RecyclerView list;
 
     @Inject
     AppsController appsController;
@@ -47,7 +39,6 @@ public class BuildsActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(builds -> {
                     BuildsRecyclerViewAdapter adapter = new BuildsRecyclerViewAdapter(builds);
-                    RecyclerView list = (RecyclerView) findViewById(R.id.builds_list);
                     list.setAdapter(adapter);
                     list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 });

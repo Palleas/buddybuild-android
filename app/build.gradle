@@ -12,10 +12,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BUDDYBUILD_API_KEY", '"' + (System.getenv("BUDDYBUILD_API_KEY") ?: BUDDYBUILD_API_KEY) + '"')
-
-        jackOptions {
-            enabled true
-        }
     }
 
     compileOptions {
