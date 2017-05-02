@@ -12,6 +12,7 @@ import java.util.List;
 
 import buddybuild.com.ultron.model.Build;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BuildsRecyclerViewAdapter extends RecyclerView.Adapter<BuildsRecyclerViewAdapter.BuildHolder> {
 
@@ -44,6 +45,8 @@ public class BuildsRecyclerViewAdapter extends RecyclerView.Adapter<BuildsRecycl
 
         public BuildHolder(View itemView) {
             super(itemView);
+
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(Build build) {

@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import buddybuild.com.ultron.controller.AppsController;
 import buddybuild.com.ultron.model.App;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.Binds;
 import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity implements AppsRecyclerViewAdapte
 
         setContentView(R.layout.activity_main);
 
-        RecyclerView list = (RecyclerView) findViewById(R.id.apps_list);
+        ButterKnife.bind(this);
 
         final MainActivity self = this;
         appsController.list()

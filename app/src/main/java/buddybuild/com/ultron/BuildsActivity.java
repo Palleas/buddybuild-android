@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import buddybuild.com.ultron.controller.AppsController;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -27,7 +28,10 @@ public class BuildsActivity extends AppCompatActivity {
         MyApplication.getApplicationComponent().inject(this);
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_builds);
+
+        ButterKnife.bind(this);
 
         setTitle(getIntent().getStringExtra(MainActivity.APP_NAME));
 

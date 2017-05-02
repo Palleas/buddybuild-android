@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import buddybuild.com.ultron.model.App;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import java.util.List;
 
@@ -43,15 +44,17 @@ public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-         @BindView(R.id.platform) TextView platformView;
-        @BindView(R.id.name)TextView nameView;
+        @BindView(R.id.platform) TextView platformView;
+        @BindView(R.id.name) TextView nameView;
 
         public ViewHolder(View view) {
             super(view);
+
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(final App app, final OnAppClickListener listener) {
-            platformView.setText(app.getPlatform());
+            platformView.setText(app.getPlatform() == null ? "No platform" : app.getPlatform());
             nameView.setText(app.getName());
 
             itemView.setOnClickListener(new View.OnClickListener() {
