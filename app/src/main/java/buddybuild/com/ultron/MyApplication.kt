@@ -1,30 +1,18 @@
 package buddybuild.com.ultron
 
-import android.app.Activity
 import android.app.Application
 
-import javax.inject.Inject
+class MyApplication : Application() {
 
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasDispatchingActivityInjector
-
-class MyApplication : Application(), HasDispatchingActivityInjector {
-    @Inject
-    internal var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>? = null
-
+    companion object {
+        lateinit var appComponent: ApplicationComponent
+    }
     override fun onCreate() {
         super.onCreate()
 
-        applicationComponent = DaggerIApplicationComponent.builder().build()
+        appComponent = DaggerApplicationComponent.builder()
+                .activityModule(ActivityModule)
+                .build()
     }
 
-    override fun activityInjector(): DispatchingAndroidInjector<Activity> {
-        return dispatchingAndroidInjector
-    }
-
-    companion object {
-
-        var applicationComponent: IApplicationComponent? = null
-            private set
-    }
 }

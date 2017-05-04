@@ -24,13 +24,12 @@ import retrofit2.Response
 
 class MainActivity : BaseActivity(), AppsRecyclerViewAdapter.OnAppClickListener {
 
-    @Inject
-    internal var appsController: AppsController? = null
+    @Inject lateinit var appsController: AppsController
 
-    @BindView(R.id.apps_list) internal var list: RecyclerView? = null
+    @BindView(R.id.apps_list) lateinit var list: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        MyApplication.applicationComponent.inject(this)
+        MyApplication.appComponent.inject(this)
 
         super.onCreate(savedInstanceState)
 
@@ -42,11 +41,16 @@ class MainActivity : BaseActivity(), AppsRecyclerViewAdapter.OnAppClickListener 
         appsController!!.list()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { apps ->
+                .subscribe({ apps ->
+                    println("Found apps $apps")
+//                    var list = findViewById(R.id.apps_list) as RecyclerView
+
                     val adapter = AppsRecyclerViewAdapter(apps, self)
-                    list!!.adapter = adapter
-                    list!!.layoutManager = LinearLayoutManager(applicationContext)
-                }
+                    list.adapter = adapter
+                    list.layoutManager = LinearLayoutManager(applicationContext)
+                }, { error ->
+                    println("Fount error $error")
+                })
     }
 
     override fun onAppClick(app: App) {

@@ -17,7 +17,7 @@ class BuildsRecyclerViewAdapter(private val builds: List<Build>) : RecyclerView.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuildHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.build_item, parent, false)
-        return BuildsRecyclerViewAdapter.BuildHolder(view)
+        return BuildHolder(view)
     }
 
     override fun onBindViewHolder(holder: BuildHolder, position: Int) {
@@ -29,8 +29,8 @@ class BuildsRecyclerViewAdapter(private val builds: List<Build>) : RecyclerView.
     }
 
     inner class BuildHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        @BindView(R.id.commit_message) internal var commitMessageView: TextView? = null
-        @BindView(R.id.author) internal var authorView: TextView? = null
+        @BindView(R.id.commit_message) lateinit var commitMessageView: TextView
+        @BindView(R.id.author) lateinit var authorView: TextView
 
         init {
 
@@ -38,8 +38,8 @@ class BuildsRecyclerViewAdapter(private val builds: List<Build>) : RecyclerView.
         }
 
         fun bind(build: Build) {
-            commitMessageView!!.text = build.commit.message
-            authorView!!.text = build.commit.author
+            commitMessageView!!.text = build.commit!!.message
+            authorView!!.text = build.commit!!.author
 
             if (build.buildStatus.equals("cancelled", ignoreCase = true)) {
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.cancelled))

@@ -31,17 +31,16 @@ class AppsRecyclerViewAdapter(private val mValues: List<App>, private val listen
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        @BindView(R.id.platform) internal var platformView: TextView? = null
-        @BindView(R.id.name) internal var nameView: TextView? = null
+        @BindView(R.id.platform) lateinit var platformView: TextView
+        @BindView(R.id.name) lateinit var nameView: TextView
 
         init {
-
             ButterKnife.bind(this, itemView)
         }
 
         fun bind(app: App, listener: OnAppClickListener) {
-            platformView!!.setText(if (app.platform == null) "No platform" else app.platform)
-            nameView!!.text = app.name
+            platformView.text = (if (app.platform == null) "No platform" else "Platform")
+            nameView.text = app.name
 
             itemView.setOnClickListener { listener.onAppClick(app) }
         }

@@ -23,6 +23,6 @@ interface Buddybuild {
 
     @FormUrlEncoded
     @POST("apps/{app_id}/build")
-    fun trigger(@Path("app_id") appId: String, @Field("branch") branch: String): Observable<Build>
+    fun trigger(@Path("app_id") appId: String, @Field("branch") branch: String?): Observable<Build>
 
 }

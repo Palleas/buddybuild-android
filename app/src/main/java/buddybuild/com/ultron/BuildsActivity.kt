@@ -16,15 +16,14 @@ import io.reactivex.schedulers.Schedulers
 
 class BuildsActivity : AppCompatActivity() {
 
-    private var appId: String? = null
+    lateinit var appId: String
 
-    @BindView(R.id.builds_list) internal var list: RecyclerView? = null
+    @BindView(R.id.builds_list) lateinit var list: RecyclerView
 
-    @Inject
-    internal var appsController: AppsController? = null
+    @Inject lateinit var appsController: AppsController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        MyApplication.applicationComponent.inject(this)
+        MyApplication.appComponent.inject(this)
 
         super.onCreate(savedInstanceState)
 
@@ -36,19 +35,19 @@ class BuildsActivity : AppCompatActivity() {
 
         appId = intent.getStringExtra(MainActivity.APP_ID)
 
-        appsController!!
+        appsController
                 .builds(appId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { builds ->
                     val adapter = BuildsRecyclerViewAdapter(builds)
-                    list!!.adapter = adapter
-                    list!!.layoutManager = LinearLayoutManager(applicationContext)
+                    list.adapter = adapter
+                    list.layoutManager = LinearLayoutManager(applicationContext)
                 }
     }
 
     fun onTriggerClick(view: View) {
-        appsController!!.trigger(appId)
+        appsController.trigger(appId)
                 .subscribeOn(Schedulers.io())
                 .subscribe { build -> print("Response = " + build.buildStatus) }
     }
