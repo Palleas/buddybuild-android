@@ -1,0 +1,5 @@
+package buddybuild.com.ultron
+
+import android.support.v7.app.AppCompatActivity
+
+open class BaseActivity : AppCompatActivity()
